@@ -10,10 +10,10 @@ So I created SOTag, a simple tagging system that only allows a set of tags hat a
 
 
 TODO
-====
+=====
 
-Load with options
-Everything with SO_ prefix
-Max Tags
-Better styled close button
-Newline for lots of tags
+ - Load with options
+ - Everything with SO_ prefix
+ - Max Tags
+ - Better styled close button
+ - Newline for lots of tags
