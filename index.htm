@@ -8,203 +8,35 @@
 body {
 	padding:30px;
 }
-.tag_input {
-	width:760px;
-	height:32px;
-	border:#ccc 1px solid;
-	padding:0 5px 0 5px;
-	font-size: 90%;
-}
-.tag_input_text {
-	width:750px;
-	height:32px;
-	border:none;
-	outline:none;
-	font-size:18px;
-	padding:0;
-	float:right;
-}
-.tag {
-	color: #3E6D8E;
-	background-color: #E0EAF1;
-	border-bottom: 1px solid #b3cee1;
-	border-right: 1px solid #b3cee1;
-	padding: 3px 4px 3px 4px;
-	margin: 2px 2px 2px 0;
-	text-decoration: none;
-	font-size: 90%;
-	line-height: 2.4;
-	white-space: nowrap;
-}
-.delete-tag {
-	width: 14px;
-	height: 14px;
-	font-family:"Gill Sans", "Gill Sans MT", "Myriad Pro", "DejaVu Sans Condensed", Helvetica, Arial, sans-serif;
-	font-size:10px;
-	font-weight:bold;
-	background:#ccc;
-	border-radius:7px;
-	display:inline-block;
-	line-height:14px;
-	text-align:center;
-	cursor:pointer;
-}
-
-#SO_results {
-	display:none;
-	width:750px;
-}
-
-.SO_result {
-	width:230px;
-	float:left;
-	cursor:pointer;
-	margin:5px;
-	padding:0px 5px 5px 5px;
-}
-
-.SO_result:hover {
-	background:#FAFAFA;
-}
-.SO_result_description {
-	font-size:11px;
-}
-.selected_tags {
-	display:inline;
-}
 </style>
 
+<link rel="stylesheet" type="text/css" href="css/so_tag.css">
 
 </head>
-
 <body>
 
-
-
-
-
+<h2>jQuery.SO_Tag</h2>
+<p>Start typing some programming words, like <storng>PHP</strong></p>
 <div class="tag_input">
 	<form action="result.php" method="post" id="tag_form">
 		<div class="selected_tags">
 			<span class="tag" id="tag_40">
-				Test-tag
+				Default-Tag
 				<span class="delete-tag">x</span>
 			</span>
 			<span class="tag" id="tag_50">
-				Test-tag-hahhahahaha
+				Another-Default-Tag
 				<span class="delete-tag">x</span>
 			</span>
 		</div>
-	
 		<input type="text" value="" name="tag_input_text" id="tag_input_text" class="tag_input_text" />
 	</form>
 </div>
 <div id="SO_results"></div>
 <input type="button" value="Submit" name="SO_submit" id="SO_submit" class="SO_submit" />
 
-
-
-
-
-
 <script type="text/javascript" src="jquery-1.10.2.min.js"></script>
-<script type="text/javascript">
+<script type="text/javascript" src="js/so_tag.js"></script>
 
-var SO_tags_width = 0;
-
-function SO_calculate_tag_widths ()
-{
-	return $('.selected_tags').width();
-}
-
-function SO_resize_input (combined_tag_widths)
-{
-	var SO_input_width = $('.tag_input').width();	
-	$('.tag_input_text').width(SO_input_width - combined_tag_widths - 5);
-}
-
-function SO_update_results ()
-{
-	$.getJSON("SOTag.php", { q: $('.tag_input_text').val() }, function(json_data){	
-		var i = 1;
-		var clear_html = ' style="clear:both;"';
-		var result_object = $('#SO_results');
-		result_object.show();
-		result_object.html('');
-		
-		result_object.append
-		$.each(json_data, function(index, item){
-			if(i === 4){
-				var clear = clear_html;
-			}else{
-				var clear = '';
-			}
-			result_object.append('<div class="SO_result"' + clear + '><span class="SO_result_title tag">' + item.tag + '</span><div class="SO_result_description">' + item.tag_description + '</div><div class="SO_result_id" style="display:none;">' + item.id + '</div>');
-			i++;
-		});
-		
-		// If the user clicks on a tag then add it to the box
-		$('.SO_result').click(function() {
-			// Add the tag
-			$('.selected_tags').append('<span class="tag" id="tag_' + $(this).children('.SO_result_id').html() + '">' + $(this).children('.SO_result_title').html() + '<span class="delete-tag">x</span></span>');
-			
-			// Hide the results box
-			var result_object = $('#SO_results');
-			result_object.hide();
-			result_object.html('');
-			
-			// Delete Button
-			delete_tag();
-			
-			// Reset the search bar
-			$('.tag_input_text').val('')
-			SO_resize_input(SO_calculate_tag_widths());
-		});
-	})
-	
-	
-}
-
-function delete_tag()
-{
-	// Delete
-	$('.delete-tag').click(function() {
-		$(this).parent().remove('.tag');
-		SO_resize_input(SO_calculate_tag_widths());
-	});
-}
-
-function SO_init()
-{
-	// Widths
-    var SO_container_width = $('.tag_input').width();
-	var SO_input_width = $('.tag_input_text').width();
-	
-	// Padding for calculation
-	var SO_container_padding_left = $('.tag_input').css('padding-left');
-	var SO_container_padding_right = $('.tag_input').css('padding-right');
-	
-	SO_resize_input(SO_calculate_tag_widths());
-	
-	$('.SO_submit').click(function() {
-		var selected_options = [];
-		$('.selected_tags > .tag').each(function() { selected_options.push($(this).attr('id')) });
-		
-		selected_options = selected_options.join(',');
-		$('#tag_form').append('<input type="hidden" name="selected_tags" value="' + selected_options + '" />');
-		$('#tag_form').submit();
-	});
-	
-	// Now if the user starts typing show results
-	$('.tag_input_text').bind('keyup', function(e) {
-		SO_update_results();
-	});
-	
-	delete_tag();	
-}
-$(document).ready(function() {
-	SO_init();
-});
-</script>
 </body>
 </html>
