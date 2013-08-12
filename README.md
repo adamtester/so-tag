@@ -7,10 +7,26 @@ I found myself in need of a tagging system, so I searched far and wide on the in
 
 So I created SOTag, a simple tagging system that only allows a set of tags hat are stored in a database.
 
+####Screenshot
+
+![Screenshot](http://i.imgur.com/t1LubGi.png)
+
+Please note the sample data is taken directly off the StackOverflow website and remains their property.
+
+#### Basic Example
+
+```html
+<div class="tag_input">
+ <form action="result.php" method="post" id="tag_form">
+		<input type="text" value="" name="tag_input_text" id="tag_input_text" class="tag_input_text" />
+	</form>
+</div>
+<input type="button" value="Submit" name="SO_submit" />
+```
 
 
-TODO
-=====
+
+####TODO
 
  - Load with options
  - Everything with SO_ prefix
