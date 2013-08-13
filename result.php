@@ -1,14 +1,28 @@
 <?php
-
+/*/
+ * SOTag - jQuery Plugin
+ * This plugin allowed StackOverflow style tags with descriptions from a database
+ *
+ * Examples and documentation at: https://github.com/iog3/SOTag
+ *
+ * Copyright (c) 2013 Adam Tester @ Heliocentrix ltd
+ *
+ * License:
+ * This work is licensed under the MIT License
+ * http://opensource.org/licenses/MIT
+ *
+ * @author Adam Tester eMail: adam@genyx.co.uk | iog3.com
+ * @version 1.0.0 (12.2013)
+ * 
+ * PHP example showing how to retrieve posted data
+ *
+/*/
 if(isset($_POST['selected_tags'])){
-	
 	echo '<pre>var_dump of selected tags, the number refers to the ID in the database:</pre>';
-	
 	$tags = $_POST['selected_tags'];
 	$tags = str_replace('tag_', '', $tags);
 	$tags = explode(',', $tags);
 	var_dump($tags);
-
 }else{
 	echo 'No tags were submitted';
 }
