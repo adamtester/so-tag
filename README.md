@@ -16,12 +16,11 @@ Please note the sample data is taken directly off the StackOverflow website and 
 #### Basic Example
 
 ```html
-<div class="tag_input">
- <form action="result.php" method="post" id="tag_form">
-		<input type="text" value="" name="tag_input_text" id="tag_input_text" class="tag_input_text" />
-	</form>
-</div>
-<input type="button" value="Submit" name="SO_submit" />
+<input type="text" value="" id="basic_example" />
+
+<script type="text/javascript">
+$('#basic_example').sotag();
+</script>
 ```
 
 
