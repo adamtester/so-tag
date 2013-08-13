@@ -40,7 +40,7 @@
 	cursor:pointer;
 }
 
-#SO_results {
+.SO_results {
 	display:none;
 	width:750px;
 	background:#fff;

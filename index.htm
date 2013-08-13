@@ -11,32 +11,29 @@ body {
 </style>
 
 <link rel="stylesheet" type="text/css" href="css/so_tag.css">
-
+<script type="text/javascript" src="jquery-1.10.2.min.js"></script>
+<script type="text/javascript" src="js/so_tag.js"></script>
 </head>
 <body>
 
 <h2>jQuery.SO_Tag</h2>
 <p>Start typing some programming words, like <storng>PHP</strong></p>
-<div class="tag_input">
-	<form action="result.php" method="post" id="tag_form">
-		<div class="selected_tags">
-			<span class="tag" id="tag_40">
-				Default-Tag
-				<span class="delete-tag">x</span>
-			</span>
-			<span class="tag" id="tag_50">
-				Another-Default-Tag
-				<span class="delete-tag">x</span>
-			</span>
-		</div>
-		<input type="text" value="" name="tag_input_text" id="tag_input_text" class="tag_input_text" />
-	</form>
-</div>
-<div id="SO_results"></div>
-<input type="button" value="Submit" name="SO_submit" id="SO_submit" class="SO_submit" />
+<input type="text" value="" id="basic_example" />
 
-<script type="text/javascript" src="jquery-1.10.2.min.js"></script>
-<script type="text/javascript" src="js/so_tag.js"></script>
+<br />
+<p>To actually get it to post to the server side just wrap it in a form and add a submit button!</p>
+<form action="result.php" method="post" id="tag_form">
+	<input type="text" value="" name="form_example" id="form_example" />
+	<input type="button" value="Submit" />
+</form>
+
+
+
+
+<script type="text/javascript">
+$('#basic_example').sotag();
+$('#form_example').sotag();
+</script>
 
 </body>
 </html>
