@@ -17,22 +17,40 @@ body {
 <body>
 
 <h2>jQuery.SO_Tag</h2>
-<p>Start typing some programming words, like <storng>PHP</strong></p>
+<p><strong>Start typing some programming words (example: PHP)</strong></p>
 <input type="text" value="" id="basic_example" />
 
 <br />
-<p>To actually get it to post to the server side just wrap it in a form and add a submit button!</p>
-<form action="result.php" method="post" id="tag_form">
-	<input type="text" value="" name="form_example" id="form_example" />
-	<input type="button" value="Submit" />
+
+<p><strong>To actually get it to post to the server side just wrap it in a form and add a submit button!</strong></p>
+<form action="result.php" method="post">
+	<input type="text" value="" name="single_example" id="single_example" />
+	<input type="submit" value="Submit" />
 </form>
 
+<br />
+
+<p><strong>Here is an example with multiple tag fields</strong></p>
+<form action="result.php" method="post">
+	<p>Programming words (example: PHP)</p>
+	<input type="text" value="" name="multi_example_programming_tags" class="multi_example_programming_tags" />
+	<br />
+	<p>People (example: Whitey)</p>
+	<input type="text" value="" name="multi_example_people_tags" class="multi_example_people_tags" />
+	<input type="submit" value="Submit" />
+</form>
 
 
 
 <script type="text/javascript">
 $('#basic_example').sotag();
-$('#form_example').sotag();
+$('#single_example').sotag();
+
+$('.multi_example_programming_tags').sotag();
+
+$('.multi_example_people_tags').sotag({
+		autocomplete_URL : 'SOTag.php?people'
+});
 </script>
 
 </body>

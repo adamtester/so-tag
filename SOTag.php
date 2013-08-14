@@ -1,6 +1,38 @@
 <?php
-
+/*/
+ *
+ * SOTag - jQuery Plugin
+ * This plugin allowed StackOverflow style tags with descriptions from a database
+ *
+ * Examples and documentation at: https://github.com/iog3/SOTag
+ *
+ * Copyright (c) 2013 Adam Tester @ Heliocentrix ltd
+ *
+ * License:
+ * This work is licensed under the MIT License
+ * http://opensource.org/licenses/MIT
+ *
+ * @author Adam Tester eMail: adam@genyx.co.uk | iog3.com
+ * @version 1.0.0 (12.2013)
+ * 
+ * SO_processor Class for the ajax calls
+ *
+/*/
 class SO_processor {
+	
+	/*/
+	 *
+	 * Set your database login details in here
+	 * $db_host           = This is your host, e.g. localhost
+	 * $db_username       = Your username
+	 * $db_password       = Your password
+	 * $db_name           = The database name
+	 * $db_table          = The table that the tags are stored in
+	 * $search_min_length = The table that the tags are stored in
+	 * $max_results       = The maximum number of character required before returning a result
+	 * $db_connection     = The connection handler, leave this NULL!
+	 *
+	/*/
 	
 	var $db_host     = 'localhost';
 	var $db_username = 'root';
@@ -13,13 +45,28 @@ class SO_processor {
 	
 	var $db_connection = NULL;
 	
+	/*/
+	 *
+	 * function return_search($keywords)
+	 * 
+	 * Performs the actual query based on the keywords using REGEXP
+	 * Returns json if success or 0 if no records found
+	 *
+	/*/
+	
 	public function return_search ($keywords = '')
 	{
 		if(strlen($keywords) >= $this->search_min_length) {
 			try {
 				$this->connect_db();
 				$keywords = '^.*'.$keywords.'.*$';
-				$statement = $this->db_connection->prepare("SELECT * FROM tags WHERE tag REGEXP ? LIMIT " . $this->max_results);
+				
+				$where = " && type = 'programming' ";
+				if(isset($_GET['people'])){
+					$where = " && type = 'people' ";
+				}
+				
+				$statement = $this->db_connection->prepare("SELECT * FROM tags WHERE tag REGEXP ? " . $where . " LIMIT " . $this->max_results);
 				$statement->execute(array($keywords));
 				$rows = $statement->fetchAll();
 				if(!empty($rows)){
@@ -36,6 +83,15 @@ class SO_processor {
 		}
 	}
 	
+	/*/
+	 *
+	 *
+	 *
+	 *
+	 *
+	 *
+	/*/
+	
 	private function connect_db ()
 	{
 		try {
@@ -47,6 +103,15 @@ class SO_processor {
 		}
 	}
 	
+	/*/
+	 *
+	 *
+	 *
+	 *
+	 *
+	 *
+	/*/
+	
 	private function close_db_connection ()
 	{
 		$this->db_connection = NULL;
@@ -54,8 +119,17 @@ class SO_processor {
 	
 }
 
-$SO_tag = new SO_processor;
+/*/
+ *
+ *
+ *
+ *
+ *
+ *
+/*/
+	
 if(isset($_REQUEST['q'])){
+	$SO_tag = new SO_processor;
 	echo $SO_tag->return_search($_REQUEST['q']);
 }else{
 	echo 0;
