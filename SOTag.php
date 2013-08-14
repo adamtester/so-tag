@@ -60,7 +60,13 @@ class SO_processor {
 			try {
 				$this->connect_db();
 				$keywords = '^.*'.$keywords.'.*$';
-				$statement = $this->db_connection->prepare("SELECT * FROM tags WHERE tag REGEXP ? LIMIT " . $this->max_results);
+				
+				$where = " && type = 'programming' ";
+				if(isset($_GET['people'])){
+					$where = " && type = 'people' ";
+				}
+				
+				$statement = $this->db_connection->prepare("SELECT * FROM tags WHERE tag REGEXP ? " . $where . " LIMIT " . $this->max_results);
 				$statement->execute(array($keywords));
 				$rows = $statement->fetchAll();
 				if(!empty($rows)){
