@@ -2,9 +2,9 @@
  * SOTag - jQuery Plugin
  * This plugin allowed StackOverflow style tags with descriptions from a database
  *
- * Examples and documentation at: https://github.com/ludatha/SOTag
+ * Examples and documentation at: https://github.com/iog3/SOTag
  *
- * Copyright (c) 2013 Adam Tester
+ * Copyright (c) 2013 Adam Tester @ Heliocentrix ltd
  *
  * License:
  * This work is licensed under the MIT License
@@ -28,7 +28,7 @@
 		var elem_parent = $(element_parent);
 		var obj = this;
 		var settings = $.extend(true, {
-			autocomplete_URL: null,
+			autocomplete_URL: 'SOTag.php',
 			additional_class: '',
 			allow_edit: true,
 			allow_delete: true,
@@ -43,7 +43,7 @@
 
 		var SO_calculate_tag_widths = function ()
 		{
-			return $('.selected_tags').width();
+			return elem.prev('.selected_tags').width();
 		}
 		
 		var SO_resize_input = function (combined_tag_widths, new_elem)
@@ -53,44 +53,96 @@
 		}
 		
 		var SO_update_results = function ()
-		{			
-			$.getJSON("SOTag.php", { q: elem.val() }, function(json_data){	
+		{		
+			
+			$.getJSON(settings.autocomplete_URL, { q: elem.val() }, function(json_data){
 				var i = 1;
 				var clear_html = ' style="clear:both;"';
-				var result_object = $('.SO_results');
+				var result_object = elem.parent().next('.SO_results');
 				result_object.show();
 				result_object.html('');
 				
 				$.each(json_data, function(index, item){
+					// Break
 					if(i === 4){
 						var clear = clear_html;
 					}else{
 						var clear = '';
 					}
-					result_object.append('<div class="SO_result"' + clear + '><span class="SO_result_title tag">' + item.tag + '</span><div class="SO_result_description">' + item.tag_description + '</div><div class="SO_result_id" style="display:none;">' + item.id + '</div>');
+					
+					// Selected
+					if(elem.prev('.selected_tags').children('#tag_' + item.id).length == 0) {
+						var selected = '';
+					}else{
+						var selected = ' SO_selected';
+					}
+					
+					result_object.append('<div class="SO_result' + selected + '"' + clear + '><span class="SO_result_title tag">' + item.tag + '</span><div class="SO_result_description">' + item.tag_description + '</div><div class="SO_result_id" style="display:none;">' + item.id + '</div>');
 					i++;
 				});
 				result_object.append('<div' + clear_html + '></div>');
 				
+				var add_new = false;
 				
 				// If the user clicks on a tag then add it to the box
 				$('.SO_result').click(function() {
-					// Add the tag
-					elem.prev('.selected_tags').append('<span class="tag" id="tag_' + $(this).children('.SO_result_id').html() + '">' + $(this).children('.SO_result_title').html() + '<span class="delete-tag">x</span></span>');
-					
-					// Hide the results box
-					var result_object = $('.SO_results');
-					result_object.hide();
-					result_object.html('');
+					// Check if the tag is already in the list
+					if(elem.prev('.selected_tags').children('#tag_' + $(this).children('.SO_result_id').html()).length == 0) {
+						// It doesn't exist
+						// Add the tag
+						elem.prev('.selected_tags').append('<span class="tag" id="tag_' + $(this).children('.SO_result_id').html() + '">' + $(this).children('.SO_result_title').html() + '<span class="delete-tag">x</span></span>');
+						
+						// Hide the results box
+						var result_object = $('.SO_results');
+						result_object.hide();
+						result_object.html('');
+						
+						// Reset the search bar
+						$(elem).val('');
+						SO_resize_input(SO_calculate_tag_widths(), element_parent);
+						$(elem).focus();
+					}
 					
 					// Delete Button
 					delete_tag();
-					
-					// Reset the search bar
-					$('.tag_input_text').val('');
-					SO_resize_input(SO_calculate_tag_widths(), element_parent);
 				});
-			})
+				
+				// Various keys
+				$(elem).keyup(function(e){
+					if ( $.inArray( e.keyCode, settings.break_keycodes ) > -1 ){
+						// We need to assign this as we didnt click on it
+						var new_elem = ($('.SO_results').children(":first"));
+							
+						// Check if the tag is already in the list					
+						if($('#tag_' + $(new_elem).children('.SO_result_id').html()).length == 0) {
+							// It doesn't exist
+							
+							// Add the tag
+							elem.prev('.selected_tags').append('<span class="tag" id="tag_' + $(new_elem).children('.SO_result_id').html() + '">' + $(new_elem).children('.SO_result_title').html() + '<span class="delete-tag">x</span></span>');
+							
+							// Hide the results box
+							var result_object = elem.parent().next('.SO_results');
+							result_object.hide();
+							result_object.html('');
+							
+							// Reset the search bar
+							$(elem).val('');
+							SO_resize_input(SO_calculate_tag_widths(), element_parent);
+						}
+						
+						// Delete Button
+						delete_tag();
+					
+					} else if (e.keyCode === 8) {
+						// Backspace so remove the last tag
+						console.log("Removing");
+						elem.prev('.selected_tags:last-child').remove();
+						
+						SO_resize_input(SO_calculate_tag_widths(), element_parent);
+					}
+					
+				});
+			});
 		}
 		
 		var delete_tag = function ()
@@ -114,13 +166,26 @@
 			
 			SO_resize_input(SO_calculate_tag_widths(), element_parent);
 			
-			$('.SO_submit').click(function() {
+			var form = $(elem).parents('form');
+			var submitted = false;
+			$(form).submit(function(e) {
+				
+				//## TODO: For each input, create a seperate hidden field 
+				
 				var selected_options = [];
-				$('.selected_tags > .tag').each(function() { selected_options.push($(this).attr('id')) });
+				
+				form.find('.tag').each(function() { selected_options.push($(this).attr('id')) });
 				
 				selected_options = selected_options.join(',');
-				$('#tag_form').append('<input type="hidden" name="selected_tags" value="' + selected_options + '" />');
-				$('#tag_form').submit();
+
+				$(form).append('<input type="hidden" name="' + elem.attr("name") + '" value="' + selected_options + '" />');
+				
+				if(submitted === false){
+					$(form).submit();
+				}
+				submitted = true;
+				
+				e.preventDefault();
 			});
 			
 			// Now if the user starts typing show results
@@ -139,6 +204,8 @@
        return this.each(function()
        {
 			var element = $(this);
+			var element_id = element.attr("name");
+			
 			
 			// Prepare the html of the input
 			element.wrap('<div class="tag_input" />');

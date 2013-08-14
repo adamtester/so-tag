@@ -10,7 +10,7 @@
 	height:32px;
 	border:none;
 	outline:none;
-	font-size:18px;
+	font-size:14px;
 	padding:0;
 	float:right;
 }
@@ -56,8 +56,15 @@
 	padding:0px 5px 5px 5px;
 }
 
+.SO_selected {
+	background:#E8FFDF;
+}
+
 .SO_result:hover {
 	background:#FAFAFA;
+}
+.SO_selected:hover {
+	background:#caedbc;
 }
 .SO_result_description {
 	font-size:11px;
