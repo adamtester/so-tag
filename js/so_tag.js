@@ -34,27 +34,37 @@
 			allow_delete: true,
 			allow_add: true,
 			animation: false,
+			description: false,
+			image: false,
+			min_width: 50,
 			animation_speed: 200,
 			break_keycodes: [ 13, 186, 188, 32 ],
 		}, options || {});
 		
 		var SO_tags_width = 0;
-		var elem_parent = null;
 
 		var SO_calculate_tag_widths = function ()
 		{
-			return elem.prev('.selected_tags').width();
+			return elem.prev('.selected_tags').outerWidth();
 		}
 		
 		var SO_resize_input = function (combined_tag_widths, new_elem)
 		{
-			var SO_input_width = new_elem.width();
-			elem.width(SO_input_width - combined_tag_widths - 5);
+			var SO_input_width = new_elem.outerWidth();
+			
+			// We need to get the css padding
+			var SO_padding_total = parseInt(elem.css('padding-left')) + parseInt(elem.css('padding-right'));
+			SO_padding_total += parseInt(elem_parent.css('padding-left')) + parseInt(elem_parent.css('padding-right'));
+			
+			// And the border widths
+			SO_padding_total += parseInt(elem_parent.css('border-left-width')) + parseInt(elem_parent.css('border-right-width'));
+			
+			console.log(SO_input_width + ' | ' + combined_tag_widths + ' | ' +SO_padding_total);
+			elem.width(SO_input_width - combined_tag_widths - SO_padding_total);
 		}
 		
 		var SO_update_results = function ()
-		{		
-			
+		{
 			$.getJSON(settings.autocomplete_URL, { q: elem.val() }, function(json_data){
 				var i = 1;
 				var clear_html = ' style="clear:both;"';
@@ -77,7 +87,12 @@
 						var selected = ' SO_selected';
 					}
 					
-					result_object.append('<div class="SO_result' + selected + '"' + clear + '><span class="SO_result_title tag">' + item.tag + '</span><div class="SO_result_description">' + item.tag_description + '</div><div class="SO_result_id" style="display:none;">' + item.id + '</div>');
+					result_object.append('<div class="SO_result' + selected + '"' + clear + '><span class="SO_result_title tag">' + item.tag + '</span><div class="SO_result_id" style="display:none;">' + item.id + '</div>');
+					
+					if(settings.description){
+						result_object.append('<div class="SO_result_description">' + item.tag_description + '</div>');
+					}
+					
 					i++;
 				});
 				result_object.append('<div' + clear_html + '></div>');
@@ -170,7 +185,21 @@
 			var submitted = false;
 			$(form).submit(function(e) {
 				
-				//## TODO: For each input, create a seperate hidden field 
+				/*## TODO: For each input, create a seperate hidden field 
+				// Select all the inputs
+				var elements = form.find('input[data-sotag!=""]'); 
+				
+				// Enter each loop
+				elements.each(function()
+				{
+					
+					console.log(1);
+				
+				
+				});
+				
+				/*
+				
 				
 				var selected_options = [];
 				
@@ -185,7 +214,7 @@
 				}
 				submitted = true;
 				
-				e.preventDefault();
+				e.preventDefault();*/
 			});
 			
 			// Now if the user starts typing show results
@@ -199,21 +228,34 @@
 		this.SO_init();		
 	};
 
-   $.fn.sotag = function(options)
-   {
-       return this.each(function()
-       {
+	$.fn.sotag = function(options)
+	{
+		return this.each(function()
+		{
 			var element = $(this);
 			var element_id = element.attr("name");
-			
+			var selected_options = [];
 			
 			// Prepare the html of the input
 			element.wrap('<div class="tag_input" />');
 			element.addClass('tag_input_text');
 			element.before('<div class="selected_tags" />');
 			
-			var element_parent = element.parent('.tag_input');
+			var element_parent = element.parents('.tag_input');
 			element_parent.after('<div class="SO_results" />');
+			
+			// Submitting forms
+			var form = $(this).closest('form');
+			$(form).submit(function(e) {
+				element.prev('.selected_tags').children('.tag').each(function() { selected_options.push($(this).attr('id')) });				
+				selected_options = selected_options.join(',');
+				$(form).append('<input type="hidden" name="' + element_id + '" value="' + selected_options + '" />');
+				
+				// Empty the selected_options for the next one
+				selected_options.length = 0;
+				$(form).unbind().submit();
+				e.preventDefault(); 
+			});
 			
 			// Return early if this element already has a plugin instance
 			if (element.data('sotag')) return;
@@ -223,6 +265,6 @@
 			
 			// Store plugin object in this element's data
 			element.data('sotag', sotag);
-       });
-   };
+		});
+	};
 })(jQuery);
