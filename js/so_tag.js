@@ -138,13 +138,17 @@
 						
 						// Delete Button
 						delete_tag();
-					
 					} else if (e.keyCode === 8) {
 						// Backspace so remove the last tag
 						console.log("Removing");
-						elem.prev('.selected_tags:last-child').remove();
+						if(elem.closest('.tag').hasClass('tag-highlight-delete')){
+							// Delete the tag
+							elem.closest('.tag').remove();
+						}else{
+							// Add the delete class
+							elem.closest('.tag').addClass('tag-highlight-delete');
+						}
 					}
-					
 				});
 			});
 		}
