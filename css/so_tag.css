@@ -1,18 +1,25 @@
 .tag_input {
 	width:740px;
-	height:32px;
+	height:auto;
 	border:#ccc 1px solid;
-	padding:0 5px 0 5px;
+	padding:3px 5px 0 5px;
 	font-size: 90%;
+	position:relative;
+	display: block;
+    overflow: hidden;
 }
 .tag_input_text {
-	width:730px;
+	width:100%;
 	height:32px;
 	border:none;
 	outline:none;
 	font-size:14px;
-	padding:0;
-	float:right;
+	padding:0px;
+}
+.inputbox {
+	display: block;
+    overflow: hidden;
+	min-width:50px;
 }
 .tag {
 	color: #3E6D8E;
@@ -23,8 +30,11 @@
 	margin: 2px 2px 2px 0;
 	text-decoration: none;
 	font-size: 90%;
-	line-height: 2.4;
+	
 	white-space: nowrap;
+	float:left;
+	
+	height:16px;
 }
 .delete-tag {
 	width: 14px;
@@ -68,7 +78,4 @@
 }
 .SO_result_description {
 	font-size:11px;
-}
-.selected_tags {
-	display:inline;
 }

@@ -34,10 +34,10 @@
 			allow_delete: true,
 			allow_add: true,
 			animation: false,
+			animation_speed: 200,
 			description: false,
 			image: false,
 			min_width: 50,
-			animation_speed: 200,
 			break_keycodes: [ 13, 186, 188, 32 ],
 		}, options || {});
 		
@@ -50,6 +50,7 @@
 		
 		var SO_resize_input = function (combined_tag_widths, new_elem)
 		{
+			/*
 			var SO_input_width = new_elem.outerWidth();
 			
 			// We need to get the css padding
@@ -61,6 +62,14 @@
 			
 			console.log(SO_input_width + ' | ' + combined_tag_widths + ' | ' +SO_padding_total);
 			elem.width(SO_input_width - combined_tag_widths - SO_padding_total);
+			
+			console.log(elem.width());
+			
+			if(elem.width() <= settings.min_width){
+				console.log("Reset Needed");
+				elem.width(SO_input_width - SO_padding_total);
+			}
+			*/
 		}
 		
 		var SO_update_results = function ()
@@ -68,9 +77,14 @@
 			$.getJSON(settings.autocomplete_URL, { q: elem.val() }, function(json_data){
 				var i = 1;
 				var clear_html = ' style="clear:both;"';
-				var result_object = elem.parent().next('.SO_results');
+				var result_object = elem.parents().next('.SO_results');
 				result_object.show();
-				result_object.html('');
+				
+				if(!json_data){
+					result_object.html('<strong style="padding:3px; font-size:12px;">There were no results</strong>');
+				}else{
+					result_object.html('');
+				}
 				
 				$.each(json_data, function(index, item){
 					// Break
@@ -81,17 +95,20 @@
 					}
 					
 					// Selected
-					if(elem.prev('.selected_tags').children('#tag_' + item.id).length == 0) {
+					if(elem_parent.children('#tag_' + item.id).length == 0) {
 						var selected = '';
 					}else{
 						var selected = ' SO_selected';
 					}
 					
-					result_object.append('<div class="SO_result' + selected + '"' + clear + '><span class="SO_result_title tag">' + item.tag + '</span><div class="SO_result_id" style="display:none;">' + item.id + '</div>');
-					
 					if(settings.description){
-						result_object.append('<div class="SO_result_description">' + item.tag_description + '</div>');
+						var description = '<div class="SO_result_description">' + item.tag_description + '</div>';
+						result_object.append();
+					}else{
+						var description = '';	
 					}
+					
+					result_object.append('<div class="SO_result' + selected + '"' + clear + '><span class="SO_result_title tag">' + item.tag + '</span>' + description + '<div class="SO_result_id" style="display:none;">' + item.id + '</div>');
 					
 					i++;
 				});
@@ -102,10 +119,10 @@
 				// If the user clicks on a tag then add it to the box
 				$('.SO_result').click(function() {
 					// Check if the tag is already in the list
-					if(elem.prev('.selected_tags').children('#tag_' + $(this).children('.SO_result_id').html()).length == 0) {
+					if(elem_parent.children('#tag_' + $(this).children('.SO_result_id').html()).length == 0) {
 						// It doesn't exist
 						// Add the tag
-						elem.prev('.selected_tags').append('<span class="tag" id="tag_' + $(this).children('.SO_result_id').html() + '">' + $(this).children('.SO_result_title').html() + '<span class="delete-tag">x</span></span>');
+						elem.parent('.inputbox').before('<span class="tag" id="tag_' + $(this).children('.SO_result_id').html() + '">' + $(this).children('.SO_result_title').html() + '<span class="delete-tag">x</span></span>');
 						
 						// Hide the results box
 						var result_object = $('.SO_results');
@@ -170,7 +187,7 @@
 		}
 		
 		this.SO_init = function ()
-		{
+		{			
 			// Widths
 			var SO_container_width = element_parent.width();
 			var SO_input_width = elem.width();
@@ -179,7 +196,7 @@
 			var SO_container_padding_left = element_parent.css('padding-left');
 			var SO_container_padding_right = element_parent.css('padding-right');
 			
-			SO_resize_input(SO_calculate_tag_widths(), element_parent);
+			//SO_resize_input(SO_calculate_tag_widths(), element_parent);
 			
 			var form = $(elem).parents('form');
 			var submitted = false;
@@ -239,7 +256,7 @@
 			// Prepare the html of the input
 			element.wrap('<div class="tag_input" />');
 			element.addClass('tag_input_text');
-			element.before('<div class="selected_tags" />');
+			element.wrap('<span class="inputbox" />');	
 			
 			var element_parent = element.parents('.tag_input');
 			element_parent.after('<div class="SO_results" />');
