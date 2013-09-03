@@ -70,13 +70,16 @@ class SO_processor {
 				$statement->execute(array($keywords));
 				$rows = $statement->fetchAll();
 				if(!empty($rows)){
+					$this->close_db_connection();
 					return json_encode($rows);
 				}else{
+					$this->close_db_connection();
 					return 0;
 				}
 			}
 			catch (PDOException $e) {
 				echo $e->getMessage();
+				$this->close_db_connection();
 			}
 		}else{
 			return 0;

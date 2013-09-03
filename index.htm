@@ -11,7 +11,7 @@ body {
 </style>
 
 <link rel="stylesheet" type="text/css" href="css/so_tag.css">
-<script type="text/javascript" src="jquery-1.10.2.min.js"></script>
+<script type="text/javascript" src="js/jquery-1.10.2.min.js"></script>
 <script type="text/javascript" src="js/so_tag.js"></script>
 </head>
 <body>
@@ -43,7 +43,10 @@ body {
 
 
 <script type="text/javascript">
-$('#basic_example').sotag();
+$('#basic_example').sotag({
+	description : true
+});
+
 $('#single_example').sotag();
 
 $('.multi_example_programming_tags').sotag();
