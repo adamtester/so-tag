@@ -47,12 +47,17 @@ $('#basic_example').sotag({
 	description : true
 });
 
-$('#single_example').sotag();
+$('#single_example').sotag({
+	description : true
+});
 
-$('.multi_example_programming_tags').sotag();
+$('.multi_example_programming_tags').sotag({
+	description : true
+});
 
 $('.multi_example_people_tags').sotag({
-		autocomplete_URL : 'SOTag.php?people'
+		autocomplete_URL : 'SOTag.php?people',
+		description : true
 });
 </script>
 

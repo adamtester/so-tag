@@ -2,7 +2,7 @@
 	width:740px;
 	height:auto;
 	border:#ccc 1px solid;
-	padding:3px 5px 0 5px;
+	padding:3px 5px 3px 5px;
 	font-size: 90%;
 	position:relative;
 	display: block;
@@ -10,16 +10,15 @@
 }
 .tag_input_text {
 	width:100%;
-	height:32px;
 	border:none;
 	outline:none;
 	font-size:14px;
 	padding:0px;
+	margin-top: 5px;
 }
 .inputbox {
 	display: block;
     overflow: hidden;
-	min-width:50px;
 }
 .tag {
 	color: #3E6D8E;

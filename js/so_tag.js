@@ -48,30 +48,6 @@
 			return elem.prev('.selected_tags').outerWidth();
 		}
 		
-		var SO_resize_input = function (combined_tag_widths, new_elem)
-		{
-			/*
-			var SO_input_width = new_elem.outerWidth();
-			
-			// We need to get the css padding
-			var SO_padding_total = parseInt(elem.css('padding-left')) + parseInt(elem.css('padding-right'));
-			SO_padding_total += parseInt(elem_parent.css('padding-left')) + parseInt(elem_parent.css('padding-right'));
-			
-			// And the border widths
-			SO_padding_total += parseInt(elem_parent.css('border-left-width')) + parseInt(elem_parent.css('border-right-width'));
-			
-			console.log(SO_input_width + ' | ' + combined_tag_widths + ' | ' +SO_padding_total);
-			elem.width(SO_input_width - combined_tag_widths - SO_padding_total);
-			
-			console.log(elem.width());
-			
-			if(elem.width() <= settings.min_width){
-				console.log("Reset Needed");
-				elem.width(SO_input_width - SO_padding_total);
-			}
-			*/
-		}
-		
 		var SO_update_results = function ()
 		{
 			$.getJSON(settings.autocomplete_URL, { q: elem.val() }, function(json_data){
@@ -131,7 +107,6 @@
 						
 						// Reset the search bar
 						$(elem).val('');
-						SO_resize_input(SO_calculate_tag_widths(), element_parent);
 						$(elem).focus();
 					}
 					
@@ -159,7 +134,6 @@
 							
 							// Reset the search bar
 							$(elem).val('');
-							SO_resize_input(SO_calculate_tag_widths(), element_parent);
 						}
 						
 						// Delete Button
@@ -169,8 +143,6 @@
 						// Backspace so remove the last tag
 						console.log("Removing");
 						elem.prev('.selected_tags:last-child').remove();
-						
-						SO_resize_input(SO_calculate_tag_widths(), element_parent);
 					}
 					
 				});
@@ -182,7 +154,6 @@
 			// Delete
 			$('.delete-tag').click(function() {
 				$(this).parent().remove('.tag');
-				SO_resize_input(SO_calculate_tag_widths(), element_parent);
 			});
 		}
 		
@@ -195,9 +166,7 @@
 			// Padding for calculation
 			var SO_container_padding_left = element_parent.css('padding-left');
 			var SO_container_padding_right = element_parent.css('padding-right');
-			
-			//SO_resize_input(SO_calculate_tag_widths(), element_parent);
-			
+						
 			var form = $(elem).parents('form');
 			var submitted = false;
 			$(form).submit(function(e) {
