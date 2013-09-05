@@ -48,30 +48,6 @@
 			return elem.prev('.selected_tags').outerWidth();
 		}
 		
-		var SO_resize_input = function (combined_tag_widths, new_elem)
-		{
-			/*
-			var SO_input_width = new_elem.outerWidth();
-			
-			// We need to get the css padding
-			var SO_padding_total = parseInt(elem.css('padding-left')) + parseInt(elem.css('padding-right'));
-			SO_padding_total += parseInt(elem_parent.css('padding-left')) + parseInt(elem_parent.css('padding-right'));
-			
-			// And the border widths
-			SO_padding_total += parseInt(elem_parent.css('border-left-width')) + parseInt(elem_parent.css('border-right-width'));
-			
-			console.log(SO_input_width + ' | ' + combined_tag_widths + ' | ' +SO_padding_total);
-			elem.width(SO_input_width - combined_tag_widths - SO_padding_total);
-			
-			console.log(elem.width());
-			
-			if(elem.width() <= settings.min_width){
-				console.log("Reset Needed");
-				elem.width(SO_input_width - SO_padding_total);
-			}
-			*/
-		}
-		
 		var SO_update_results = function ()
 		{
 			$.getJSON(settings.autocomplete_URL, { q: elem.val() }, function(json_data){
@@ -131,7 +107,6 @@
 						
 						// Reset the search bar
 						$(elem).val('');
-						SO_resize_input(SO_calculate_tag_widths(), element_parent);
 						$(elem).focus();
 					}
 					
@@ -159,20 +134,21 @@
 							
 							// Reset the search bar
 							$(elem).val('');
-							SO_resize_input(SO_calculate_tag_widths(), element_parent);
 						}
 						
 						// Delete Button
 						delete_tag();
-					
 					} else if (e.keyCode === 8) {
 						// Backspace so remove the last tag
 						console.log("Removing");
-						elem.prev('.selected_tags:last-child').remove();
-						
-						SO_resize_input(SO_calculate_tag_widths(), element_parent);
+						if(elem.closest('.tag').hasClass('tag-highlight-delete')){
+							// Delete the tag
+							elem.closest('.tag').remove();
+						}else{
+							// Add the delete class
+							elem.closest('.tag').addClass('tag-highlight-delete');
+						}
 					}
-					
 				});
 			});
 		}
@@ -182,21 +158,41 @@
 			// Delete
 			$('.delete-tag').click(function() {
 				$(this).parent().remove('.tag');
-				SO_resize_input(SO_calculate_tag_widths(), element_parent);
 			});
 		}
 		
 		this.SO_init = function ()
-		{			
-			// Widths
-			var SO_container_width = element_parent.width();
-			var SO_input_width = elem.width();
-			
-			// Padding for calculation
-			var SO_container_padding_left = element_parent.css('padding-left');
-			var SO_container_padding_right = element_parent.css('padding-right');
-			
-			//SO_resize_input(SO_calculate_tag_widths(), element_parent);
+		{
+			if(elem.val().length > 0){
+				// Convert default tags to actual tags
+				var tags = elem.val();
+				
+				// Split them up, accounting for all types
+				tags = tags.replace(", ", ",");
+				tags = tags.replace("; ", ",");
+				tags = tags.replace(";", ",");
+				tags = tags.replace(" ", "");
+				tags = tags.replace("	", "");
+				
+				// CSV to array
+				tags = tags.split(",");
+				
+				tags.forEach(function(tag)
+				{
+					// Get id and name
+					tag = tag.split("_");
+					
+					var tag_id = tag[0];
+					var tag_name = tag[1];
+					
+					// Add the tag
+					elem.parent('.inputbox').before('<span class="tag" id="tag_' + tag_id + '">' + tag_name + '<span class="delete-tag">x</span></span>');	
+				});
+				
+				// Reset the search bar
+				$(elem).val('');
+			}
+				
 			
 			var form = $(elem).parents('form');
 			var submitted = false;
@@ -258,13 +254,16 @@
 			element.addClass('tag_input_text');
 			element.wrap('<span class="inputbox" />');	
 			
+			// Default CSS of the element
+			element.attr('autocomplete', 'off');
+			
 			var element_parent = element.parents('.tag_input');
 			element_parent.after('<div class="SO_results" />');
 			
 			// Submitting forms
 			var form = $(this).closest('form');
 			$(form).submit(function(e) {
-				element.prev('.selected_tags').children('.tag').each(function() { selected_options.push($(this).attr('id')) });				
+				element.children('.tag').each(function() { selected_options.push($(this).attr('id')) });				
 				selected_options = selected_options.join(',');
 				$(form).append('<input type="hidden" name="' + element_id + '" value="' + selected_options + '" />');
 				
