@@ -162,15 +162,38 @@
 		}
 		
 		this.SO_init = function ()
-		{			
-			// Widths
-			var SO_container_width = element_parent.width();
-			var SO_input_width = elem.width();
+		{
+			if(elem.val().length > 0){
+				// Convert default tags to actual tags
+				var tags = elem.val();
+				
+				// Split them up, accounting for all types
+				tags = tags.replace(", ", ",");
+				tags = tags.replace("; ", ",");
+				tags = tags.replace(";", ",");
+				tags = tags.replace(" ", "");
+				tags = tags.replace("	", "");
+				
+				// CSV to array
+				tags = tags.split(",");
+				
+				tags.forEach(function(tag)
+				{
+					// Get id and name
+					tag = tag.split("_");
+					
+					var tag_id = tag[0];
+					var tag_name = tag[1];
+					
+					// Add the tag
+					elem.parent('.inputbox').before('<span class="tag" id="tag_' + tag_id + '">' + tag_name + '<span class="delete-tag">x</span></span>');	
+				});
+				
+				// Reset the search bar
+				$(elem).val('');
+			}
+				
 			
-			// Padding for calculation
-			var SO_container_padding_left = element_parent.css('padding-left');
-			var SO_container_padding_right = element_parent.css('padding-right');
-						
 			var form = $(elem).parents('form');
 			var submitted = false;
 			$(form).submit(function(e) {
@@ -231,13 +254,16 @@
 			element.addClass('tag_input_text');
 			element.wrap('<span class="inputbox" />');	
 			
+			// Default CSS of the element
+			element.attr('autocomplete', 'off');
+			
 			var element_parent = element.parents('.tag_input');
 			element_parent.after('<div class="SO_results" />');
 			
 			// Submitting forms
 			var form = $(this).closest('form');
 			$(form).submit(function(e) {
-				element.prev('.selected_tags').children('.tag').each(function() { selected_options.push($(this).attr('id')) });				
+				element.children('.tag').each(function() { selected_options.push($(this).attr('id')) });				
 				selected_options = selected_options.join(',');
 				$(form).append('<input type="hidden" name="' + element_id + '" value="' + selected_options + '" />');
 				
