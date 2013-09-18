@@ -1,0 +1,35 @@
+{
+    "name": "SO_Tag",
+	
+    "title": "SO_Tag: Tagging system based on StackOverflows tag search",
+    "description": "jQuery tagging system that only allows a set of tags hat are stored in a database",
+    "keywords": [
+        "tag",
+        "tagging"
+    ],
+    "version": "1.0.2",
+    "author": {
+        "name": "iog3",
+        "url": "http://www.iog3.com/"
+    },
+    "maintainers": [
+        {
+            "name": "Adam Tester",
+            "email": "adam@genyx.co.uk",
+            "url": "http://www.iog3.com/"
+        }
+    ],
+    "licenses": [
+        {
+            "type": "MIT",
+            "url": "https://github.com/iog3/SOTag/blob/master/LICENSE"
+        }
+    ],
+    "bugs": "https://github.com/iog3/SOTag/issues",
+    "homepage": "http://www.iog3.com/322/so_tag-tagging-system-based-on-stackoverflows-tag-search/",
+    "docs": "http://www.iog3.com/322/so_tag-tagging-system-based-on-stackoverflows-tag-search/",
+    "download": "http://www.iog3.com/322/so_tag-tagging-system-based-on-stackoverflows-tag-search/",
+    "dependencies": {
+        "jquery": ">=1.6"
+    }
+}
