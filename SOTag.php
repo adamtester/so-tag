@@ -37,7 +37,7 @@ class SO_processor {
 	var $db_host     = 'localhost';
 	var $db_username = 'root';
 	var $db_password = '';
-	var $db_name     = 'charity';
+	var $db_name     = 'sotag_tags';
 	var $db_table    = 'tags';
 	
 	var $search_min_length = 2;
@@ -66,7 +66,7 @@ class SO_processor {
 					$where = " && type = 'people' ";
 				}
 				
-				$statement = $this->db_connection->prepare("SELECT * FROM tags WHERE tag REGEXP ? " . $where . " LIMIT " . $this->max_results);
+				$statement = $this->db_connection->prepare("SELECT * FROM " . $this->db_table . " WHERE tag REGEXP ? " . $where . " LIMIT " . $this->max_results);
 				$statement->execute(array($keywords));
 				$rows = $statement->fetchAll();
 				if(!empty($rows)){

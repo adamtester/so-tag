@@ -140,7 +140,6 @@
 						delete_tag();
 					} else if (e.keyCode === 8) {
 						// Backspace so remove the last tag
-						console.log("Removing");
 						if(elem.closest('.tag').hasClass('tag-highlight-delete')){
 							// Delete the tag
 							elem.closest('.tag').remove();
@@ -198,36 +197,33 @@
 			var submitted = false;
 			$(form).submit(function(e) {
 				
-				/*## TODO: For each input, create a seperate hidden field 
+				//## TODO: For each input, create a seperate hidden field 
 				// Select all the inputs
 				var elements = form.find('input[data-sotag!=""]'); 
+				
+				// Selected options holds the options while being processed
+				var selected_options = [];
 				
 				// Enter each loop
 				elements.each(function()
 				{
+					elem.parents('.tag_input').children('.tag').each(function() { selected_options.push($(this).attr('id')) });
 					
-					console.log(1);
-				
-				
+					selected_options = selected_options.join(',');
+
+					$(form).append('<input type="hidden" name="' + elem.attr("name") + '" value="' + selected_options + '" />');
+					
+					// Reset the array
+					selected_options = [];
 				});
 				
-				/*
-				
-				
-				var selected_options = [];
-				
-				form.find('.tag').each(function() { selected_options.push($(this).attr('id')) });
-				
-				selected_options = selected_options.join(',');
-
-				$(form).append('<input type="hidden" name="' + elem.attr("name") + '" value="' + selected_options + '" />');
-				
+				// Submit the form
 				if(submitted === false){
 					$(form).submit();
 				}
 				submitted = true;
 				
-				e.preventDefault();*/
+				e.preventDefault();
 			});
 			
 			// Now if the user starts typing show results
