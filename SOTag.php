@@ -14,12 +14,12 @@
  *
  * @author Adam Tester eMail: adam@genyx.co.uk | iog3.com
  * @version 1.0.0 (12.2013)
- * 
+ *
  * SO_processor Class for the ajax calls
  *
 /*/
 class SO_processor {
-	
+
 	/*/
 	 *
 	 * Set your database login details in here
@@ -33,27 +33,27 @@ class SO_processor {
 	 * $db_connection     = The connection handler, leave this NULL!
 	 *
 	/*/
-	
+
 	var $db_host     = 'localhost';
 	var $db_username = 'root';
 	var $db_password = '';
 	var $db_name     = 'charity';
 	var $db_table    = 'tags';
-	
+
 	var $search_min_length = 2;
 	var $max_results = 6;
-	
+
 	var $db_connection = NULL;
-	
+
 	/*/
 	 *
 	 * function return_search($keywords)
-	 * 
+	 *
 	 * Performs the actual query based on the keywords using REGEXP
 	 * Returns json if success or 0 if no records found
 	 *
 	/*/
-	
+
 	public function return_search ($keywords = '')
 	{
 		if(strlen($keywords) >= $this->search_min_length) {
@@ -65,10 +65,10 @@ class SO_processor {
 				if(isset($_GET['people'])){
 					$where = " && type = 'people' ";
 				}
-				
+
 				$statement = $this->db_connection->prepare("SELECT * FROM " . $this->db_table . " WHERE tag REGEXP ? " . $where . " LIMIT " . $this->max_results);
 				$statement->execute(array($keywords));
-				$rows = $statement->fetchAll();
+				$rows = $statement->fetchAll(PDO::FETCH_ASSOC);
 				if(!empty($rows)){
 					$this->close_db_connection();
 					return json_encode($rows);
@@ -85,7 +85,7 @@ class SO_processor {
 			return 0;
 		}
 	}
-	
+
 	/*/
 	 *
 	 *
@@ -94,7 +94,7 @@ class SO_processor {
 	 *
 	 *
 	/*/
-	
+
 	private function connect_db ()
 	{
 		try {
@@ -105,7 +105,7 @@ class SO_processor {
 			$this->db_connection = false;
 		}
 	}
-	
+
 	/*/
 	 *
 	 *
@@ -114,12 +114,12 @@ class SO_processor {
 	 *
 	 *
 	/*/
-	
+
 	private function close_db_connection ()
 	{
 		$this->db_connection = NULL;
 	}
-	
+
 }
 
 /*/
@@ -130,11 +130,10 @@ class SO_processor {
  *
  *
 /*/
-	
+
 if(isset($_REQUEST['q'])){
 	$SO_tag = new SO_processor;
 	echo $SO_tag->return_search($_REQUEST['q']);
 }else{
 	echo 0;
 }
-?>
