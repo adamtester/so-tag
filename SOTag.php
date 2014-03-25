@@ -68,7 +68,7 @@ class SO_processor {
 				
 				$statement = $this->db_connection->prepare("SELECT * FROM " . $this->db_table . " WHERE tag REGEXP ? " . $where . " LIMIT " . $this->max_results);
 				$statement->execute(array($keywords));
-				$rows = $statement->fetchAll();
+				$rows = $statement->fetchAll(PDO::FETCH_ASSOC);
 				if(!empty($rows)){
 					$this->close_db_connection();
 					return json_encode($rows);
