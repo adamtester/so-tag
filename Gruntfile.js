@@ -18,7 +18,7 @@ module.exports = function (grunt) {
         },
         copy: {
             main: {
-                src: ['css/*', 'js/so_tag.js', '*.json', '*.php', 'LICENSE', 'README.md'],
+                src: ['css/*', 'js/so_tag.js', '*.json', '*.php', 'LICENSE', 'README.md', '!package.json'],
                 dest: 'build/',
             },
         },
