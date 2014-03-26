@@ -74,10 +74,12 @@ module.exports = function (grunt) {
             build_dual: {
                 src: ['<%= dest_dir_dual %>*']
             }
+        },
         compress: {
             build_release: {
                 options: {
-                    archive: 'build/SOTag.VERSION.zip'
+                    mode: 'zip',
+                    archive: 'build/SOTag.<%= pkg.version %>.zip'
                 },
                 cwd: '<%= dest_dir_rel %>',
                 src: ['**/*'],
@@ -86,7 +88,8 @@ module.exports = function (grunt) {
             },
             build_dev: {
                 options: {
-                    archive: 'build/SOTag.DEV.VERSION.zip'
+                    mode: 'zip',
+                    archive: 'build/SOTag.DEV.<%= pkg.version %>.zip'
                 },
                 cwd: '<%= dest_dir_dev %>',
                 src: ['**/*'],
@@ -95,7 +98,8 @@ module.exports = function (grunt) {
             },
             build_dual: {
                 options: {
-                    archive: 'build/SOTag.dual.VERSION.zip'
+                    mode: 'zip',
+                    archive: 'build/SOTag.FULL.<%= pkg.version %>.zip'
                 },
                 cwd: '<%= dest_dir_dual %>',
                 src: ['**/*'],
