@@ -50,7 +50,22 @@ $('#single_example').sotag({
 });
 </script>
 ```
+####Development
 
+SOTag is set up as a grunt project to automate build tasks (such as creating minified css/js files). It is not required but it will make your life easier if you use it.
+You need:
+
+ - [Node.js](http://nodejs.org/) (It is quite easy to install)
+ - [Grunt](http://gruntjs.com/getting-started) - even easier to install: just enter this into your command line: ```npm install -g grunt-cli```
+ - Next you just have to (from the project dir) run ```npm install```
+ - Then run build task(s) as desired (with the command line syntax of ```grunt [buildtask]```)
+
+The build tasks that are currently defined:
+
+- `build_release`: release build, css/js in minified form only
+- `build_dev`: dev build, css/js in original form only
+- `build_dual`: dual mode build with both minified and original css/js
+- `default`: runs both the `build_dev` and `build_release` tasks
 
 ####TODO
 
