@@ -74,6 +74,38 @@ module.exports = function (grunt) {
             build_dual: {
                 src: ['<%= dest_dir_dual %>*']
             }
+        },
+        compress: {
+            build_release: {
+                options: {
+                    mode: 'zip',
+                    archive: 'build/SOTag.<%= pkg.version %>.zip'
+                },
+                cwd: '<%= dest_dir_rel %>',
+                src: ['**/*'],
+                dest: 'SOTag/',
+                expand: true
+            },
+            build_dev: {
+                options: {
+                    mode: 'zip',
+                    archive: 'build/SOTag.DEV.<%= pkg.version %>.zip'
+                },
+                cwd: '<%= dest_dir_dev %>',
+                src: ['**/*'],
+                dest: 'SOTag/',
+                expand: true
+            },
+            build_dual: {
+                options: {
+                    mode: 'zip',
+                    archive: 'build/SOTag.FULL.<%= pkg.version %>.zip'
+                },
+                cwd: '<%= dest_dir_dual %>',
+                src: ['**/*'],
+                dest: 'SOTag/',
+                expand: true
+            }
         }
     });
 
@@ -83,11 +115,12 @@ module.exports = function (grunt) {
     grunt.loadNpmTasks('grunt-contrib-jshint');
     grunt.loadNpmTasks('grunt-contrib-clean');
     grunt.loadNpmTasks('grunt-contrib-cssmin');
+    grunt.loadNpmTasks('grunt-contrib-compress');
 
     // Default task(s).
-    grunt.registerTask('build_dev', ['clean:build_dev', 'copy:build_dev', 'jshint']);
-    grunt.registerTask('build_release', ['clean:build_release', 'copy:build_release', 'jshint', 'uglify:build_release', 'cssmin:build_release']);
-    grunt.registerTask('build_dual', ['clean:build_dual', 'copy:build_dual', 'jshint', 'uglify:build_dual', 'cssmin:build_dual']);
+    grunt.registerTask('build_dev', ['clean:build_dev', 'copy:build_dev', 'jshint', 'compress:build_dev']);
+    grunt.registerTask('build_release', ['clean:build_release', 'copy:build_release', 'jshint', 'uglify:build_release', 'cssmin:build_release', 'compress:build_release']);
+    grunt.registerTask('build_dual', ['clean:build_dual', 'copy:build_dual', 'jshint', 'uglify:build_dual', 'cssmin:build_dual', 'compress:build_dual']);
     grunt.registerTask('default', ['build_dev', 'build_release']);
 
 };
