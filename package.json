@@ -4,7 +4,7 @@
   "description": "jQuery tagging systemt that only allows a set of tags that are stored in a database",
   "main": "js/so_tag.js",
   "scripts": {
-    "test": "echo \"Error: no test specified\" && exit 1"
+    "test": "echo \"No Tests currently specified\""
   },
   "repository": {
     "type": "git",
