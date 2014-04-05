@@ -11,17 +11,15 @@ module.exports = function (grunt) {
         dest_dir_rel: 'build/release/',
         dest_dir_dual: 'build/dual/',
         uglify: {
-            options: {
-                banner: '/*! <%= pkg.name %> <%= grunt.template.today("yyyy-mm-dd") %> */\n'
+            main: {
+                files: [{
+                    expand: true,
+                    cwd: '',
+                    src: '<%= src_files_js %>',
+                    dest: '<%= grunt.option("outpath") %>',
+                    ext: '.min.js'
+                }]
             },
-            build_release: {
-                src: ['<%= src_files_js %>'],
-                dest: '<%= dest_dir_rel %>js/so_tag.min.js'
-            },
-            build_dual: {
-                src: ['<%= src_files_js %>'],
-                dest: '<%= dest_dir_dual %>js/so_tag.min.js'
-            }
         },
         jshint: {
             main: {
