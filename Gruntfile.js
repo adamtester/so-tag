@@ -41,26 +41,19 @@ module.exports = function (grunt) {
             }
         },
         cssmin: {
-            build_release: {
+            main: {
                 options : {
                     report: 'gzip'
                 },
-                expand: true,
-                cwd: 'css/',
-                src: ['*.css', '!*.min.css'],
-                dest: '<%= dest_dir_rel %>/css/',
-                ext: '.min.css'
+                files: [
+                    {
+                        expand: true,
+                        cwd: 'css',
+                        src: ['*.css', '!*.min.css'],
+                        dest: '<%= grunt.option("outpath") %>/css/',
+                        ext: '.min.css'
+                    }]
             },
-            build_dual: {
-                options : {
-                    report: 'gzip'
-                },
-                expand: true,
-                cwd: 'css/',
-                src: ['*.css', '!*.min.css'],
-                dest: '<%= dest_dir_dual %>/css/',
-                ext: '.min.css'
-            }
         },
         clean: {
             build_release: {
