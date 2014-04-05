@@ -117,6 +117,15 @@ module.exports = function (grunt) {
     require('time-grunt')(grunt);
     require('load-grunt-tasks')(grunt);
 
+    //custom task:
+    grunt.registerTask('set_option', 'Set a global variable.', function (name, val) {
+        grunt.option(name, val);
+        if (name === 'outpath') {
+            grunt.log.writeln("Output folder is now: " + grunt.option('outpath'));
+        } else {
+            grunt.log.writeln("Global '" + name + "' is now: " + val);
+        }
+    });
 
     // Default task(s).
     grunt.registerTask('build_dev', ['clean:build_dev', 'csscomb', 'copy:build_dev', 'jshint', 'compress:build_dev']);
