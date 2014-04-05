@@ -127,10 +127,4 @@ module.exports = function (grunt) {
         }
     });
 
-    // Default task(s).
-    grunt.registerTask('build_dev', ['clean:build_dev', 'csscomb', 'copy:build_dev', 'jshint', 'compress:build_dev']);
-    grunt.registerTask('build_release', ['clean:build_release', 'csscomb', 'copy:build_release', 'jshint', 'uglify:build_release', 'cssmin:build_release', 'compress:build_release']);
-    grunt.registerTask('build_dual', ['clean:build_dual', 'csscomb', 'copy:build_dual', 'jshint', 'uglify:build_dual', 'cssmin:build_dual', 'compress:build_dual']);
-    grunt.registerTask('default', ['build_dev', 'build_release']);
-
 };
