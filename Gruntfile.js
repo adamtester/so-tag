@@ -56,15 +56,9 @@ module.exports = function (grunt) {
             },
         },
         clean: {
-            build_release: {
-                src: ['<%= dest_dir_rel %>*']
+            main: {
+                src: ['<%= grunt.option("outpath") %>*']
             },
-            build_dev: {
-                src: ['<%= dest_dir_dev %>*']
-            },
-            build_dual: {
-                src: ['<%= dest_dir_dual %>*']
-            }
         },
         compress: {
             build_release: {
