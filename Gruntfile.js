@@ -99,6 +99,11 @@ module.exports = function (grunt) {
                 src: ['*.css'],
                 dest: 'css/'
             }
+        },
+        newer: {
+            options: {
+                cache: 'node_modules/grunt-newer/.cache/<%= grunt.option("outpath") %>'
+            }
         }
     });
     require('time-grunt')(grunt);
