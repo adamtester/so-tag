@@ -1,5 +1,4 @@
-[![Build Status](https://travis-ci.org/PacificMorrowind/SOTag.svg?branch=Travis)](https://travis-ci.org/PacificMorrowind/SOTag)
-jQuery.SO_Tag
+[![Build Status](https://travis-ci.org/PacificMorrowind/SOTag.svg?branch=Travis)](https://travis-ci.org/PacificMorrowind/SOTag)[![Built with Grunt](https://cdn.gruntjs.com/builtwith.png)](http://gruntjs.com/)jQuery.SO_Tag
 =====
 
 Tagging system based on StackOverflows tags with descriptions.
