@@ -61,36 +61,16 @@ module.exports = function (grunt) {
             },
         },
         compress: {
-            build_release: {
+            main: {
                 options: {
                     mode: 'zip',
-                    archive: 'build/SOTag.<%= pkg.version %>.zip'
+                    archive: 'build/SOTag.<%= pkg.version %>.<%= grunt.option("archive") %>.zip'
                 },
-                cwd: '<%= dest_dir_rel %>',
+                cwd: '<%= grunt.option("outpath") %>',
                 src: ['**/*'],
                 dest: 'SOTag/',
                 expand: true
             },
-            build_dev: {
-                options: {
-                    mode: 'zip',
-                    archive: 'build/SOTag.DEV.<%= pkg.version %>.zip'
-                },
-                cwd: '<%= dest_dir_dev %>',
-                src: ['**/*'],
-                dest: 'SOTag/',
-                expand: true
-            },
-            build_dual: {
-                options: {
-                    mode: 'zip',
-                    archive: 'build/SOTag.FULL.<%= pkg.version %>.zip'
-                },
-                cwd: '<%= dest_dir_dual %>',
-                src: ['**/*'],
-                dest: 'SOTag/',
-                expand: true
-            }
         },
         csscomb: {
             main: {
