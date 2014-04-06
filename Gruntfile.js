@@ -33,7 +33,7 @@ module.exports = function (grunt) {
             dev: {
                 expand: true,
                 cwd: '',
-                src: [['<%= src_files_js %>'], ['<%= src_files_css %>'], ['<%= src_files_html %>'], ['<%= src_files_images %>']],
+                src: [['<%= src_files_js %>'], ['<%= src_files_css %>']],
                 dest: '<%= grunt.option("outpath") %>'
             }
         },
