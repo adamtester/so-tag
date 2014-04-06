@@ -100,6 +100,11 @@ module.exports = function (grunt) {
                 dest: 'css/'
             }
         },
+        jsonlint: {
+            main: {
+                src: ['*.json']
+            }
+        },
         newer: {
             options: {
                 cache: 'node_modules/grunt-newer/.cache/<%= grunt.option("outpath") %>'
