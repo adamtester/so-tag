@@ -105,6 +105,11 @@ module.exports = function (grunt) {
                 src: ['*.json']
             }
         },
+        notify_hooks: {
+            options: {
+                enabled: true
+            }
+        },
         newer: {
             options: {
                 cache: 'node_modules/grunt-newer/.cache/<%= grunt.option("outpath") %>'
