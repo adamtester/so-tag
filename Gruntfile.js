@@ -27,17 +27,17 @@ module.exports = function (grunt) {
             },
         },
         copy: {
-            build_release: {
-                src: ['<%= src_files_other %>'],
-                dest: '<%= dest_dir_rel %>',
+            main: {
+                expand: true,
+                cwd: '',
+                src: '<%= src_files_other %>',
+                dest: '<%= grunt.option("outpath") %>',
             },
-            build_dev: {
-                src: ['<%= src_files_js %>', '<%= src_files_css %>', '<%= src_files_other %>'],
-                dest: '<%= dest_dir_dev %>',
-            },
-            build_dual: {
-                src: ['<%= src_files_js %>', '<%= src_files_css %>', '<%= src_files_other %>'],
-                dest: '<%= dest_dir_dual %>',
+            dev: {
+                expand: true,
+                cwd: '',
+                src: [['<%= src_files_js %>'], ['<%= src_files_css %>'], ['<%= src_files_html %>'], ['<%= src_files_images %>']],
+                dest: '<%= grunt.option("outpath") %>'
             }
         },
         cssmin: {
