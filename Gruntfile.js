@@ -7,9 +7,6 @@ module.exports = function (grunt) {
         src_files_js: ['js/so_tag.js'],
         src_files_css: ['css/*.css'],
         src_files_other: ['*.json', '*.php', 'LICENSE', 'README.md', '!package.json'],
-        dest_dir_dev: 'build/dev/',
-        dest_dir_rel: 'build/release/',
-        dest_dir_dual: 'build/dual/',
         uglify: {
             main: {
                 files: [{
