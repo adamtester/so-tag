@@ -105,5 +105,19 @@ module.exports = function (grunt) {
             grunt.log.writeln("Global '" + name + "' is now: " + val);
         }
     });
-
+  //Task Groups:
+    grunt.registerTask('prebuild', ['set_option:outpath:', 'newer:csscomb:main']);
+    grunt.registerTask('lint', ['set_option:outpath:', 'newer:jsonlint:main', 'newer:jshint:main']);
+    grunt.registerTask('minify', ['newer:uglify:main', 'newer:cssmin:main']);
+    grunt.registerTask('dev', ['set_option:outpath:build/dev/', 'newer:copy', 'set_option:archive:DEV', 'compress:main']);
+    grunt.registerTask('release', ['set_option:outpath:build/release/', 'newer:copy:main', 'minify', 'set_option:archive:RELEASE', 'compress:main']);
+    grunt.registerTask('build_dev', ['lint', 'prebuild',  'dev']);
+    grunt.registerTask('build_release', ['lint', 'prebuild', 'release']);
+    grunt.registerTask('build_dual', ['lint', 'prebuild',  'set_option:outpath:build/dual/', 'newer:copy', 'minify', 'set_option:archive:FULL', 'compress:main']);
+    grunt.registerTask('default', ['lint', 'prebuild',  'dev', 'release']);
+    //cleanup tasks:
+    grunt.registerTask('clean_full', ['set_option:outpath:build/', 'clean']);
+    grunt.registerTask('clean_dev', ['set_option:outpath:build/dev/', 'clean']);
+    grunt.registerTask('clean_dual', ['set_option:outpath:build/dual/', 'clean']);
+    grunt.registerTask('clean_release', ['set_option:outpath:build/release/', 'clean']);
 };
