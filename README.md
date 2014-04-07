@@ -1,5 +1,4 @@
-[![Build Status](https://travis-ci.org/PacificMorrowind/SOTag.svg?branch=Travis)](https://travis-ci.org/PacificMorrowind/SOTag)
-jQuery.SO_Tag
+[![Build Status](https://travis-ci.org/PacificMorrowind/SOTag.svg?branch=Travis)](https://travis-ci.org/PacificMorrowind/SOTag)[![Built with Grunt](https://cdn.gruntjs.com/builtwith.png)](http://gruntjs.com/)jQuery.SO_Tag
 =====
 
 Tagging system based on StackOverflows tags with descriptions.
@@ -61,12 +60,22 @@ You need:
  - Next you just have to (from the project dir) run ```npm install```
  - Then run build task(s) as desired (with the command line syntax of ```grunt [buildtask]```)
 
-The build tasks that are currently defined:
+The grunt tasks that are currently defined:
 
-- `build_release`: release build, css/js in minified form only
-- `build_dev`: dev build, css/js in original form only
-- `build_dual`: dual mode build with both minified and original css/js
-- `default`: runs both the `build_dev` and `build_release` tasks
+- Normal usage:
+    - `build_release`: release build, css/js in minified form only.
+    - `build_dev`: dev build, css/js in original form only.
+    - `build_dual`: dual mode build with both minified and original css/js.
+    - `default`: runs both the `build_dev` and `build_release` tasks.
+- Cleanup:
+    - `clean_full`: totally cleans the whole build folder.
+    - `clean_dev`: cleans the dev build folder.
+    - `clean_dual`: cleans the dual build folder.
+    - `clean_release`: cleans the release build folder.
+- Extras (all of these are run if needed by the build tasks)
+    - `lint`: runs all linting tasks.
+    - `prebuild`: runs csscomb.
+    - `minify`: minifies bother JavaScript and CSS files to .min
 
 ####TODO
 
