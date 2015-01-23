@@ -83,3 +83,7 @@ The grunt tasks that are currently defined:
  - Everything with SO_ prefix
  - Max Tags
  - Better styled close button
+
+
+[![Bitdeli Badge](https://d2weczhvl823v0.cloudfront.net/iog3/sotag/trend.png)](https://bitdeli.com/free "Bitdeli Badge")
+
