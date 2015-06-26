@@ -36,11 +36,13 @@
             settings = $.extend(true, {
                 autocomplete_URL: 'SOTag.php',
                 additional_class: '',
+				backspace_delete: true, // Enable backspace delete
                 allow_edit: true,
                 allow_delete: true,
                 allow_add: true,
-                animation: false,
-                animation_speed: 200,
+                animation: false, // Animate tag deleting
+                animation_speed: 200, // Animation speed
+				max_tags: 3, // Max tags allowed
                 description: false,
                 image: false,
                 min_width: 50,
@@ -56,7 +58,13 @@
             delete_tag = function () {
                 // Delete
                 $('.delete-tag').click(function () {
-                    $(this).parent().remove('.tag');
+					if(settings.animation){
+						$(this).parent().animate({opacity: 0.25,width: "0px"}, settings.animation_speed, function() {
+							$(this).remove();
+						});
+					}else{
+						$(this).parent().remove('.tag');
+					}
                 });
             },
 
@@ -101,11 +109,12 @@
                     result_object.append('<div' + clear_html + '></div>');
                     // If the user clicks on a tag then add it to the box
                     $('.SO_result').click(function () {
+						var tags_count = $('.selected_tag').length; // Count selected tags
                     // Check if the tag is already in the list
-                        if (elem_parent.children('#tag_' + $(this).children('.SO_result_id').html()).length === 0) {
+                        if (elem_parent.children('#tag_' + $(this).children('.SO_result_id').html()).length === 0 &&  tags_count < settings.max_tags) {
                             // It doesn't exist
                             // Add the tag
-                            elem.parent('.inputbox').before('<span class="tag" id="tag_' + $(this).children('.SO_result_id').html() + '">' + $(this).children('.SO_result_title').html() + '<span class="delete-tag">x</span></span>');
+                            elem.parent('.inputbox').before('<span class="selected_tag tag" id="tag_' + $(this).children('.SO_result_id').html() + '">' + $(this).children('.SO_result_title').html() + '<span class="delete-tag">x</span></span>');
 
                             // Hide the results box
                             result_object = $('.SO_results');
@@ -123,6 +132,7 @@
 
                 // Various keys
                     $(elem).keyup(function (e) {
+			
                         if ($.inArray(e.keyCode, settings.break_keycodes) > -1) {
                             console.log(131);
                             // We need to assign this as we didnt click on it
@@ -224,7 +234,16 @@
             });
 
             // Now if the user starts typing show results
-            elem.bind('keyup', function () {
+            elem.bind('keydown', function (e) {
+				if(e.keyCode == 8 && !elem.val() && settings.backspace_delete){
+					if(settings.animation){
+						$( ".selected_tag:last" ).animate({opacity: 0.25,width: "0px"}, settings.animation_speed, function() {
+							$('.selected_tag:last').remove();
+						});
+					}else{
+						$('.selected_tag:last').remove();
+					}
+				} 
                 so_update_results();
             });
 
