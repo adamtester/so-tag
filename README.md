@@ -50,6 +50,18 @@ $('#single_example').sotag({
 });
 </script>
 ```
+
+#### Database Sample
+```sql
+CREATE TABLE IF NOT EXISTS `tags` (
+    `id` int(11) NOT NULL AUTO_INCREMENT,
+    `tag` varchar(255) NOT NULL,
+    `tag_description` varchar(255) NOT NULL,
+    `type` varchar(255) NOT NULL,
+    PRIMARY KEY (`id`)
+) ENGINE=InnoDB DEFAULT CHARSET=latin1;
+```
+
 ####Development
 
 SOTag is set up as a grunt project to automate build tasks (such as creating minified css/js files). It is not required but it will make your life easier if you use it.
