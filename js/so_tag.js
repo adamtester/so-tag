@@ -4,14 +4,13 @@
  *
  * Examples and documentation at: https://github.com/iog3/SOTag
  *
- * Copyright (c) 2013 Adam Tester @ Heliocentrix ltd
+ * Copyright (c) 2015 Adam Tester
  *
  * License:
  * This work is licensed under the MIT License
  * http://opensource.org/licenses/MIT
  *
  * @author Adam Tester eMail: adam@genyx.co.uk | iog3.com
- * @version 1.0.0 (12.2013)
  * Requires: jQuery v1.4+
  *
  * Example of usage:
