@@ -34,7 +34,7 @@ class SO_processor {
     var $db_host     = 'localhost';
     var $db_username = 'root';
     var $db_password = '';
-    var $db_name     = 'charity';
+    var $db_name     = 'sotag';
     var $db_table    = 'tags';
 
     var $search_min_length = 2;
