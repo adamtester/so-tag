@@ -40,10 +40,12 @@
                 allow_add: true,
                 animation: false,
                 animation_speed: 200,
+                max_tags: 3,
                 description: false,
                 image: false,
                 min_width: 50,
                 break_keycodes: [ 13, 186, 188, 32 ],
+                request_delay: 300
             }, options || {}),
 
             /*SO_tags_width = 0,
@@ -55,7 +57,14 @@
             delete_tag = function () {
                 // Delete
                 $('.delete-tag').click(function () {
-                    $(this).parent().remove('.tag');
+                    console.log(settings.animation);
+                    //if(settings.animation){
+                       //$(this).parent().animate({opacity: 0.25, width: "0px"}, settings.animation_speed, function() {
+                       //    $(this).remove();
+                       //});
+                    //}else{
+                       $(this).parent().remove('.tag');
+                    //}
                 });
             },
 
@@ -100,11 +109,15 @@
                     result_object.append('<div' + clear_html + '></div>');
                     // If the user clicks on a tag then add it to the box
                     $('.SO_result').click(function () {
-                    // Check if the tag is already in the list
-                        if (elem_parent.children('#tag_' + $(this).children('.SO_result_id').html()).length === 0) {
+
+                        // Count selected tags
+                        var tags_count = $('.selected_tag').length;
+
+                        // Check if the tag is already in the list
+                        if (elem_parent.children('#tag_' + $(this).children('.SO_result_id').html()).length === 0 && tags_count < settings.max_tags) {
                             // It doesn't exist
                             // Add the tag
-                            elem.parent('.inputbox').before('<span class="tag" id="tag_' + $(this).children('.SO_result_id').html() + '">' + $(this).children('.SO_result_title').html() + '<span class="delete-tag">x</span></span>');
+                            elem.parent('.inputbox').before('<span class="selected_tag tag" id="tag_' + $(this).children('.SO_result_id').html() + '">' + $(this).children('.SO_result_title').html() + '<span class="delete-tag">x</span></span>');
 
                             // Hide the results box
                             result_object = $('.SO_results');
@@ -120,7 +133,7 @@
                         delete_tag();
                     });
 
-                // Various keys
+                    // Various keys
                     $(elem).keyup(function (e) {
                         if ($.inArray(e.keyCode, settings.break_keycodes) > -1) {
                             console.log(131);
@@ -223,8 +236,23 @@
             });
 
             // Now if the user starts typing show results
-            elem.bind('keyup', function () {
-                so_update_results();
+            var cKeyPressTimer = null;
+            //elem.bind('keyup', function () {
+            elem.bind('keydown', function (e) {
+                if(e.keyCode == 8 && !elem.val() && settings.allow_delete){
+                    if(settings.animation){
+                        $( ".selected_tag:last" ).animate({opacity: 0.25,width: "0px"}, settings.animation_speed, function() {
+                            $('.selected_tag:last').remove();
+                        });
+                    }else{
+                        $('.selected_tag:last').remove();
+                    }
+                }
+
+                if(cKeyPressTimer) {
+                    clearTimeout(cKeyPressTimer);
+                }
+                cKeyPressTimer = setTimeout(so_update_results, settings.request_delay);
             });
 
             delete_tag();
@@ -269,7 +297,7 @@
             // Return early if this element already has a plugin instance
             if (element.data('sotag')) { return; }
 
-            // pass options to plugin constructor
+            // Pass options to plugin constructor
             sotag = new SoTag(this, element_parent, options);
 
             // Store plugin object in this element's data

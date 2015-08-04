@@ -72,7 +72,8 @@ $(\'#single_example\').sotag({
 </form>
 <script type="text/javascript">
 $('#basic_example').sotag({
-    description : true
+    description : true,
+    animation : true
 });
 $('#single_example').sotag({
     description : true
