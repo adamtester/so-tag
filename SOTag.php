@@ -48,7 +48,7 @@ class SO_processor {
      * Performs the actual query based on the keywords using REGEXP
      * Returns json if success or 0 if no records found
      *
-     * @param  string  $keywordsß
+     * @param  string  $keywords
      * @return Response
      */
     public function return_search($keywords = '')
