@@ -1,5 +1,5 @@
 <?php
-/*/
+/**
  *
  * SOTag - jQuery Plugin
  * This plugin allowed StackOverflow style tags with descriptions from a database
@@ -16,7 +16,7 @@
  *
  * SO_processor Class for the ajax calls
  *
-/*/
+ */
 class SO_processor {
 
     /**
@@ -24,16 +24,18 @@ class SO_processor {
      * $db_host           = This is your host, e.g. localhost
      * $db_username       = Your username
      * $db_password       = Your password
+     * $db_port           = The database servers port
      * $db_name           = The database name
      * $db_table          = The table that the tags are stored in
-     * $search_min_length = The table that the tags are stored in
-     * $max_results       = The maximum number of character required before returning a result
+     * $search_min_length = The maximum number of character required before returning a result
+     * $max_results       = The maximum number of results to be returned
      * $db_connection     = The connection handler, leave this NULL!
      */
 
     var $db_host     = 'localhost';
     var $db_username = 'root';
     var $db_password = '';
+    var $db_port     = 3306;
     var $db_name     = 'sotag';
     var $db_table    = 'tags';
 
@@ -89,7 +91,7 @@ class SO_processor {
     private function connect_db()
     {
         try {
-            $this->db_connection = new PDO("mysql:host=" . $this->db_host . ";dbname=" . $this->db_name, $this->db_username, $this->db_password);
+            $this->db_connection = new PDO("mysql:host=" . $this->db_host . ";port=" . $this->db_port . ";dbname=" . $this->db_name, $this->db_username, $this->db_password);
             return true;
         }
         catch (PDOException $e) {
