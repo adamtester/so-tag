@@ -25,7 +25,7 @@ It's easy to get started, first include the JavaScript files and the CSS
 <script type="text/javascript" src="js/so_tag.js"></script>
 ```
 
-And then assign sotag(). You'll notice the default tags are written like this: <em>24_tagname</em>, this is becasue the tags are stored in the database and the first number is relative to the ID of that tag.
+And then assign sotag(). You'll notice the default tags are written like this: <em>24_tagname</em>, this is because the tags are stored in the database and the first number is relative to the ID of that tag.
 
 ```html
 <input type="text" value="1_some, 2_example, 3_tags" id="basic_example" />
